@@ -18,9 +18,9 @@ jobs:
         with:
           python-version: 3.12
 
-      - name: Install AWS CLI
+      - name: Install AWS CLI and boto3
         run: |
-          pip install awscli
+          pip install awscli boto3
 
       - name: Configure AWS CLI
         run: |
