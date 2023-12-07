@@ -13,8 +13,7 @@ def import_ami_to_workspaces(ami_id, image_name, image_description, applications
             Ec2ImageId=ami_id,
             IngestionProcess='BYOL_WORKSPACE',
             ImageName=image_name,
-            ImageDescription=image_description,
-            Applications=applications  # Remove this line if you don't want to specify applications
+            ImageDescription=image_description
         )
         image_id = response['ImageId']
         print(f"Image import started. Image ID: {image_id}")
