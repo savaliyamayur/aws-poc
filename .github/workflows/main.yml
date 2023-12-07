@@ -1,0 +1,25 @@
+name: Import EC2 AMI to Workspaces
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  import_ami:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install boto3
+
+      - name: Run import script
+        run: python import_to_workspaces.py
