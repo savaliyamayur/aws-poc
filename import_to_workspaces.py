@@ -14,7 +14,7 @@ def import_ami_to_workspaces(ami_id, image_name, image_description, applications
             IngestionProcess='BYOL_WORKSPACE',
             ImageName=image_name,
             ImageDescription=image_description,
-            Applications=applications
+            Applications=applications  # Remove this line if you don't want to specify applications
         )
         image_id = response['ImageId']
         print(f"Image import started. Image ID: {image_id}")
@@ -39,6 +39,6 @@ if __name__ == "__main__":
     ami_id = 'ami-08997b44f5c728516'  # Replace with your EC2 AMI ID
     image_name = 'MyImportedImage'  # Provide a name for the imported image
     image_description = 'Description for MyImportedImage'  # Provide a description
-    applications = []  # Specify any applications you want to include (optional)
+    applications = []  # Remove this line if you don't want to specify applications
 
     import_ami_to_workspaces(ami_id, image_name, image_description, applications)
