@@ -6,29 +6,32 @@ on:
       - main
 
 jobs:
-  import-ami:
+  import-to-workspaces:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.12
-
-      - name: Install AWS CLI and boto3
-        run: |
-          pip install awscli boto3
-
       - name: Configure AWS CLI
         run: |
           aws configure set sso_start_url https://e360-ent.awsapps.com/start#/
           aws configure set sso_region us-west-2
-          aws configure set region us-west-2
           aws configure set sso_role_name e360-AdministratorAccess
+          aws configure sso
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: pip install boto3
 
       - name: Run import script
         run: |
-          python import_to_workspaces.py
+          python import_to_workspaces.py \
+            --ami-id ami-08997b44f5c728516 \
+            --image-name "My EC2 Image" \
+            --image-description "Description of my EC2 image" \
+            --applications Microsoft_Office_2016
