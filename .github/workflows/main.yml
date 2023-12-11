@@ -1,4 +1,4 @@
-name: Import EC2 AMI to AWS WorkSpaces
+name: Build AMI
 
 on:
   push:
@@ -6,32 +6,21 @@ on:
       - main
 
 jobs:
-  import-to-workspaces:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout Repo
+      uses: actions/checkout@v2
 
-      - name: Configure AWS CLI
-        run: |
-          aws configure set sso_start_url https://e360-ent.awsapps.com/start#/
-          aws configure set sso_region us-west-2
-          aws configure set sso_role_name e360-AdministratorAccess
-          aws configure sso
+    - name: Set up Packer
+      uses: hashicorp/setup-packer@v1
+      with:
+        packer-version: '1.7.2'
 
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.12
-
-      - name: Install dependencies
-        run: pip install boto3
-
-      - name: Run import script
-        run: |
-          python import_to_workspaces.py \
-            --ami-id ami-08997b44f5c728516 \
-            --image-name "My EC2 Image" \
-            --image-description "Description of my EC2 image" \
-            --applications Microsoft_Office_2016
+    - name: Build AMI
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      run: packer build ./.pkr.hcl
