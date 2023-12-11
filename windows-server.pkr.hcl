@@ -27,7 +27,7 @@ source "amazon-ebs" "windows-server" {
   vpc_id     = "vpc-0fb3b9a980ab34f36"       // Replace with your VPC ID
   subnet_id  = "subnet-02787bca2c3449c2b"    // Replace with your Subnet ID
   // If needed, specify security group and key pair
-  // security_group_id = "your-security-group-id"
+  security_group_id = "sg-00761bc8c49c22b50"
   // ssh_keypair_name  = "windows"
 }
 
@@ -36,5 +36,24 @@ build {
     "source.amazon-ebs.windows-server"
   ]
 
-  // Add your provisioners and other configurations here
+  provisioner "powershell" {
+    inline = [
+      "Set-ExecutionPolicy Bypass -Scope Process -Force;",
+      "[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;",
+      "iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex"
+    ]
+  }
+
+  provisioner "powershell" {
+    inline = [
+      "choco install python3 -y",
+      "choco install openjdk -y",
+      // For MS Office 365, ensure you have the right package and license
+      // "choco install microsoft-office365-business -y",  // Check for correct package name
+      "choco install microsoft-teams -y",
+      "choco install pycharm-community -y"
+    ]
+  }
+
+  // Add any additional provisioners here
 }
