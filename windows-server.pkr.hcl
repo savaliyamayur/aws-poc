@@ -23,6 +23,12 @@ source "amazon-ebs" "windows-server" {
   communicator = "winrm"
   winrm_username = "Administrator"
   ami_name = "windows-server-2022-{{timestamp}}"
+
+  vpc_id     = "vpc-0fb3b9a980ab34f36"       // Replace with your VPC ID
+  subnet_id  = "subnet-02787bca2c3449c2b"    // Replace with your Subnet ID
+  // If needed, specify security group and key pair
+  // security_group_id = "your-security-group-id"
+  // ssh_keypair_name  = "windows"
 }
 
 build {
