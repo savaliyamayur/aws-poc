@@ -1,3 +1,12 @@
+packer {
+  required_plugins {
+    amazon = {
+      version = ">= 1.0.0"
+      source  = "github.com/hashicorp/amazon"
+    }
+  }
+}
+
 source "amazon-ebs" "windows-server" {
   profile           = "e360-AdministratorAccess-950694031822"
   region            = "us-west-2"
@@ -21,6 +30,5 @@ build {
     "source.amazon-ebs.windows-server"
   ]
 
-  // Add your provisioners here, like PowerShell scripts, file uploads, etc.
+  // Add your provisioners and other configurations here
 }
-
