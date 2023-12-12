@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build_AMI:
     runs-on: ubuntu-latest
     environment: test #Github env name
 
@@ -34,7 +34,7 @@ jobs:
       run: packer build ./aws-ubuntu.pkr.hcl
 
   import_image:
-    needs: build
+    needs: build_AMI
     runs-on: ubuntu-latest
     environment: test #Github env name
     if: success()
@@ -42,5 +42,28 @@ jobs:
     steps:
       - name: Importing image to AWS and converting to WSI image
         run: echo "Importing image to AWS and converting to WSI image"
+
+  Workspace_create:
+    needs: import_image
+    runs-on: ubuntu-latest
+    environment: test #Github env name
+    if: success()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2  # Replace with your AWS region
+
+      - name: Execute Step Function
+        run: |
+          aws stepfunctions start-execution --state-machine-arn arn:aws:states:us-west-2:950694031822:stateMachine:MyStateMachine-pejsvpgtc  # Replace with your Step Function ARN
+          echo "Step Function executed"
+
 
 
