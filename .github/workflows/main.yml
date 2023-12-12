@@ -33,20 +33,22 @@ jobs:
         AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
       run: packer build ./aws-ubuntu.pkr.hcl
 
+
 jobs:
-  build:
+  import_to_aws_and_convert_to_wsi:
     runs-on: ubuntu-latest
-    # Steps for the build job go here
+    environment: test #Github env name
 
-  import_to_aws:
-    needs: build
-    runs-on: ubuntu-latest
-    if: success()
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Importing Image to AWS and Converting to WSI Image
-        run: |
-          echo "Importing Image to AWS and Converting to WSI Image"
-          # Add your AWS import and conversion commands here
+    - name: Importing image to AWS and converting to WSI image
+      run: |
+        echo "Importing image to AWS"
+        # Add commands to import the image to AWS here
+
+        echo "Converting to WSI image"
+        # Add commands to convert the image to a WSI format here
+
