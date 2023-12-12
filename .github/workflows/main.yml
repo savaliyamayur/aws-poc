@@ -32,3 +32,21 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
       run: packer build ./aws-ubuntu.pkr.hcl
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Steps for the build job go here
+
+  import_to_aws:
+    needs: build
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Importing Image to AWS and Converting to WSI Image
+        run: |
+          echo "Importing Image to AWS and Converting to WSI Image"
+          # Add your AWS import and conversion commands here
