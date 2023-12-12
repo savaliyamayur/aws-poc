@@ -32,7 +32,7 @@ source "amazon-ebs" "windows-server" {
   vpc_id     = "vpc-0fb3b9a980ab34f36"       // Replace with your VPC ID
   subnet_id  = "subnet-02787bca2c3449c2b"    // Replace with your Subnet ID
   // If needed, specify security group and key pair
-  security_group_id = "sg-00761bc8c49c22b50"
+  security_group_id = "sg-06ae91bcd2b4c03dc"
   // ssh_keypair_name  = "windows"
 }
 
