@@ -22,7 +22,11 @@ source "amazon-ebs" "windows-server" {
   }
   communicator = "winrm"
   winrm_username = "Administrator"
-  winrm_timeout = "10m"            // Example: 10 minutes timeout
+  winrm_password = "some0thingG?me5" // Adjust as per your security practices
+  winrm_timeout = "10m"
+
+  // Specify the user data file to execute on instance creation
+  user_data_file = "scripts/initialize-winrm.ps1"
   ami_name = "windows-server-2022-{{timestamp}}"
 
   vpc_id     = "vpc-0fb3b9a980ab34f36"       // Replace with your VPC ID
